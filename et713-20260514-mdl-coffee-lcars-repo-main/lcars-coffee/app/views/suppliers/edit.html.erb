@@ -1,0 +1,7 @@
+<% content_for :title, "LCARS // Edit Supplier" %>
+<% content_for :subtitle, "Modify Supplier // LCARS 2380" %>
+
+<div class="panel-label">Modify <%= supplier_designation(@supplier) %> // <%= @supplier.name %></div>
+<div class="panel-divider"></div>
+
+<%= render "form", supplier: @supplier %>

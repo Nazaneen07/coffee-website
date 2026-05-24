@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title><%= content_for(:title) || "LCARS // Nazaneen's Coffee" %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <%= stylesheet_link_tag "lcars", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags if respond_to?(:javascript_importmap_tags) %>
+</head>
+<body>
+
+<div class="lcars-app">
+
+  <div class="left-elbow"><div class="left-elbow-curve"></div></div>
+
+  <header class="lcars-header">
+    <div class="header-stub"></div>
+    <div class="header-bar">
+      <div class="header-tabs">
+        <div class="header-tab t-teal">SEC 07</div>
+        <div class="header-tab t-violet">NAZ-1</div>
+        <div class="header-tab">CMD</div>
+      </div>
+      <div class="title-text">
+        Nazaneen's Coffee Hub
+        <span class="title-sub"><%= content_for(:subtitle).presence || "LCARS 2380 // Rails Edition" %></span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="left-rail">
+    <%= link_to "Beans", beans_path,
+        class: "rail-btn bar-amber #{'active' if controller_name == 'beans'}" %>
+    <%= link_to "Suppliers", suppliers_path,
+        class: "rail-btn bar-violet #{'active' if controller_name == 'suppliers'}" %>
+    <%= link_to "+ New Bean", new_bean_path, class: "rail-btn bar-teal" %>
+    <%= link_to "+ New Supplier", new_supplier_path, class: "rail-btn bar-blue" %>
+    <div class="rail-pip"></div>
+    <div class="rail-pip pip-orange"></div>
+    <div class="rail-pip pip-teal"></div>
+    <div class="rail-spacer"></div>
+  </nav>
+
+  <main class="lcars-main">
+    <% flash.each do |type, message| %>
+      <div class="flash-msg <%= 'err' if %w[alert error].include?(type.to_s) %>">
+        <%= message %>
+      </div>
+    <% end %>
+
+    <%= yield %>
+  </main>
+
+  <div class="left-foot"><div class="left-foot-curve"></div></div>
+
+  <footer class="lcars-footer">
+    <div class="footer-stub"></div>
+    <div class="footer-bar">
+      <div class="footer-status-pills">
+        <div class="footer-pill p-teal"><span class="dot"></span>ONLINE</div>
+        <div class="footer-pill"><span class="dot"></span>LCARS 2380</div>
+      </div>
+      <div>Rails <%= Rails.version %></div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

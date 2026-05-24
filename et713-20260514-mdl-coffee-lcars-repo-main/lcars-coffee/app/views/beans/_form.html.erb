@@ -1,0 +1,47 @@
+<%= form_with(model: bean, class: "lcars-form") do |form| %>
+  <% if bean.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(bean.errors.count, "error") %> blocked this transmission</h2>
+      <ul>
+        <% bean.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :product_name, "Product designation" %>
+    <%= form.text_field :product_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :bean_type, "Variety" %>
+    <%= form.select :bean_type, ["Arabica", "Robusta", "Liberica", "Excelsa"], { include_blank: "— select variety —" } %>
+  </div>
+
+  <div class="field">
+    <%= form.label :supplier_id, "Supplier" %>
+    <%= form.collection_select :supplier_id, Supplier.order(:name), :id, :name, include_blank: "— unassigned —" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :price, "Unit price (credits)" %>
+    <%= form.text_field :price %>
+  </div>
+
+  <div class="field">
+    <%= form.label :quantity, "Stock units" %>
+    <%= form.number_field :quantity %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description, "Tasting notes" %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div class="action-row">
+    <%= form.submit class: "lcars-btn b-teal" %>
+    <%= link_to "Cancel", (bean.persisted? ? bean_path(bean) : beans_path), class: "lcars-btn" %>
+  </div>
+<% end %>

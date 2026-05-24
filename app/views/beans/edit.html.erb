@@ -1,0 +1,7 @@
+<% content_for :title, "LCARS // Edit Bean" %>
+<% content_for :subtitle, "Modify Bean Record // LCARS 2380" %>
+
+<div class="panel-label">Modify <%= bean_designation(@bean) %> // <%= @bean.product_name %></div>
+<div class="panel-divider"></div>
+
+<%= render "form", bean: @bean %>

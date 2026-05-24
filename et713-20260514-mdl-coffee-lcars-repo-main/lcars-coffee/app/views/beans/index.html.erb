@@ -1,0 +1,49 @@
+<% content_for :title, "LCARS // Bean Manifest" %>
+<% content_for :subtitle, "Bean Manifest // LCARS 2380" %>
+
+<div class="panel-label">Stardate <%= stardate %> // Bean Manifest</div>
+<div class="panel-divider"></div>
+
+<div class="action-row">
+  <%= link_to "+ New Bean", new_bean_path, class: "lcars-btn b-teal" %>
+  <%= link_to "Suppliers", suppliers_path, class: "lcars-btn b-violet" %>
+  <%= link_to "JSON Export", beans_path(format: :json), class: "lcars-btn b-blue" %>
+</div>
+
+<% if @beans.any? %>
+  <% max_qty = @beans.map(&:quantity).max %>
+  <div class="bean-list">
+    <% @beans.each do |bean| %>
+      <% pct = max_qty > 0 ? ((bean.quantity.to_f / max_qty) * 100).round : 0 %>
+      <%= link_to bean_path(bean), class: "bean-card type-#{type_class(bean.bean_type)}" do %>
+        <div class="bean-id">
+          <%= bean_designation(bean) %> // <%= supplier_designation(bean.supplier) if bean.supplier %>
+        </div>
+        <div class="bean-name"><%= bean.product_name %></div>
+        <span class="bean-type-pill t-<%= type_class(bean.bean_type) %>"><%= bean.bean_type %></span>
+        <div class="bean-desc"><%= bean.description %></div>
+        <div class="bean-meta">
+          <div class="bean-price">
+            <span class="bean-price-currency">cr</span><%= sprintf("%.2f", bean.price) %>
+          </div>
+          <div class="bean-qty">
+            <div class="qty-bar-wrap">
+              <div class="qty-bar <%= qty_class(pct) %>" style="width: <%= pct %>%"></div>
+            </div>
+            <span><%= bean.quantity %>u</span>
+          </div>
+        </div>
+        <div class="bean-supplier" style="grid-column: 1 / -1;">
+          // <%= bean.supplier&.name || "Unassigned" %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <div class="blink">> NO BEANS IN MANIFEST</div>
+    <div style="margin-top: 16px;">
+      <%= link_to "+ Add First Bean", new_bean_path, class: "lcars-btn b-teal" %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,54 @@
+<% content_for :title, "LCARS // #{@supplier.name}" %>
+<% content_for :subtitle, "Supplier Record // LCARS 2380" %>
+
+<div class="panel-label"><%= supplier_designation(@supplier) %> // Supplier Record</div>
+<div class="panel-divider"></div>
+
+<div class="panel-section s-violet">
+  <div style="font-size: 22px; font-weight: 700; color: var(--lcars-cream); text-transform: uppercase; letter-spacing: 1.5px; line-height: 1.1; margin-bottom: 16px;">
+    <%= @supplier.name %>
+  </div>
+
+  <dl class="modal-spec">
+    <dt>Designation</dt><dd><%= supplier_designation(@supplier) %></dd>
+    <dt>Address</dt><dd><%= @supplier.address %></dd>
+    <dt>Location</dt><dd><%= @supplier.city %>, <%= @supplier.state %></dd>
+    <dt>Email</dt><dd><%= @supplier.email %></dd>
+    <dt>Phone</dt><dd><%= @supplier.phone %></dd>
+    <dt>SKU Count</dt><dd><%= @supplier.beans.count %></dd>
+    <dt>Total Stock</dt><dd><%= number_with_delimiter(@supplier.beans.sum(:quantity)) %> units</dd>
+    <dt>Total Value</dt><dd><%= sprintf("%.2f", @supplier.beans.sum("price * quantity")) %> cr</dd>
+  </dl>
+</div>
+
+<% if @supplier.beans.any? %>
+  <div class="panel-section s-amber">
+    <div class="panel-label" style="margin-bottom: 12px;">// Supplied Beans</div>
+    <% max_qty = @supplier.beans.maximum(:quantity) || 1 %>
+    <div class="bean-list">
+      <% @supplier.beans.each do |bean| %>
+        <% pct = ((bean.quantity.to_f / max_qty) * 100).round %>
+        <%= link_to bean_path(bean), class: "bean-card type-#{type_class(bean.bean_type)}" do %>
+          <div class="bean-id"><%= bean_designation(bean) %></div>
+          <div class="bean-name"><%= bean.product_name %></div>
+          <span class="bean-type-pill t-<%= type_class(bean.bean_type) %>"><%= bean.bean_type %></span>
+          <div class="bean-meta">
+            <div class="bean-price"><span class="bean-price-currency">cr</span><%= sprintf("%.2f", bean.price) %></div>
+            <div class="bean-qty">
+              <div class="qty-bar-wrap"><div class="qty-bar <%= qty_class(pct) %>" style="width: <%= pct %>%"></div></div>
+              <span><%= bean.quantity %>u</span>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<div class="action-row">
+  <%= link_to "Edit", edit_supplier_path(@supplier), class: "lcars-btn b-orange" %>
+  <%= link_to "Back to Roster", suppliers_path, class: "lcars-btn" %>
+  <%= button_to "Delete", @supplier, method: :delete,
+        form: { data: { turbo_confirm: "Decommission supplier and all associated beans?" } },
+        class: "lcars-btn b-red" %>
+</div>
