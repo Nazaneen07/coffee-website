@@ -1,2 +1,0 @@
-#!/usr/bin/env ruby3.2
-exec "./bin/rails", "server", *ARGV

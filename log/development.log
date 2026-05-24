@@ -3677,3 +3677,18 @@ Processing by BeansController#index as HTML
 Completed 200 OK in 36ms (Views: 34.3ms | ActiveRecord: 1.1ms (16 queries, 6 cached) | GC: 11.3ms)
 
 
+Started GET "/beans/18" for 74.65.228.64 at 2026-05-24 15:57:12 +0000
+Cannot render console from 74.65.228.64! Allowed networks: 127.0.0.0/127.255.255.255, ::1, ::ffff:127.0.0.0/::ffff:127.255.255.255
+Processing by BeansController#show as HTML
+  Parameters: {"id" => "18"}
+  [1m[36mBean Load (0.1ms)[0m  [1m[34mSELECT "beans".* FROM "beans" WHERE "beans"."id" = 18 LIMIT 1 /*action='show',application='LcarsCoffee',controller='beans'*/[0m
+  ↳ app/controllers/beans_controller.rb:63:in 'BeansController#set_bean'
+  Rendering layout layouts/application.html.erb
+  Rendering beans/show.html.erb within layouts/application
+  [1m[36mSupplier Load (0.1ms)[0m  [1m[34mSELECT "suppliers".* FROM "suppliers" WHERE "suppliers"."id" = 10 LIMIT 1 /*action='show',application='LcarsCoffee',controller='beans'*/[0m
+  ↳ app/views/beans/show.html.erb:26
+  Rendered beans/show.html.erb within layouts/application (Duration: 2.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 4.5ms | GC: 1.2ms)
+Completed 200 OK in 7ms (Views: 4.8ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 1.2ms)
+
+
